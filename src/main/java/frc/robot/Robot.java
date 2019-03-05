@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.TeleopLoop;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
@@ -42,18 +43,39 @@ public class Robot extends TimedRobot {
         break;
     }
   }
-
+  double targetAngle = 0;
   @Override
   public void teleopInit() {
     StateManager.desiredHeight = 0;
     StateManager.wristState = WRISTSTATE.MOVING;
+    targetAngle = 0;
   }
 
   @Override
   public void teleopPeriodic() {
     //control loop
     // RobotMap.mDrivebase.driveByJoystick();
-    new TeleopLoop();
+    // new TeleopLoop();
+    RobotMap.mManipulator.updateSensors();
+
+    if (Controls.joystick.getRawButton(3) && !RobotMap.mManipulator.isCargoIn()) {
+      RobotMap.mManipulator.cargoIntake();
+    } else if (Controls.joystick.getRawButton(2)) {
+      RobotMap.mManipulator.cargoFire();
+    } else {
+      RobotMap.mManipulator.stopCargoWheels();
+    }
+
+    if (Controls.joystick.getRawButton(4)) {
+      targetAngle = 0;
+    } else if (Controls.joystick.getRawButton(1)) {
+      targetAngle = ArmConstants.lowerLimit - ArmConstants.angleOffset;
+    } else if (Controls.joystick.getRawButton(10)) {
+      // targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
+      targetAngle = 35;
+    }
+    RobotMap.mManipulator.setWristAngle(targetAngle);
+    SmartDashboard.putNumber("target", targetAngle);
   }
 
   @Override

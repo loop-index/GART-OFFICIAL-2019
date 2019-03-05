@@ -24,10 +24,11 @@ public class Controls {
     public static CustomButton CARGO_GROUND = new CustomButton(control_panel, 8);
     public static CustomButton HATCH_STATION = new CustomButton(control_panel, 0);
     public static CustomButton ROTATE = new CustomButton(control_panel, 0); //?
-
+// nghich
     //DRIVE JOYSTICK BUTTONS
     public static CustomButton BOOSTSPEED = new CustomButton(joystick, 1);
     
+
     public static double getBoostButton(){
         return joystick.getRawAxis(2);
     }
@@ -49,5 +50,6 @@ public class Controls {
     public static boolean floorIntakeTrigger(){
         return CARGO_GROUND.uniquePress();
     }
+  
 }
 
