@@ -57,17 +57,19 @@ public class Manipulator extends Subsystem {
   public void cargoIntake(boolean IN){
     double speed = 1;
     if (IN){
-      if (cargoDetect.get()){
-        upperWheel.set(speed);
-        lowerWheel.set(-speed);
-      } else {
-        upperWheel.stopMotor();
-        lowerWheel.stopMotor();
-      }
+      upperWheel.set(speed);
+      lowerWheel.set(-speed);
     } else {
       upperWheel.set(-speed);
       lowerWheel.set(speed);
     }
+  }
+
+  /**
+   * @return if the switch has been depressed by cargo
+   */
+  public boolean isCargoIn(){
+    return cargoDetect.get();
   }
 
   /**
@@ -79,6 +81,14 @@ public class Manipulator extends Subsystem {
     } else {
       hatchIntake.set(false);
     }
+  }
+
+  /**
+   * Stops motors.
+   */
+  public void stopCargoWheels(){
+    upperWheel.stopMotor();
+    lowerWheel.stopMotor();
   }
 
   @Override

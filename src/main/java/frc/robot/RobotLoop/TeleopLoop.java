@@ -4,6 +4,7 @@ package frc.robot.RobotLoop;
 import frc.robot.Controls;
 import frc.robot.RobotMap;
 import frc.robot.RobotLoop.StateManager;
+import frc.robot.RobotLoop.StateManager.CARGOSTATE;
 import frc.robot.RobotLoop.StateManager.ELEVATORSTATE;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
 
@@ -13,8 +14,15 @@ import frc.robot.RobotLoop.StateManager.WRISTSTATE;
 public class TeleopLoop {
 
     public TeleopLoop (){
+        //-------------CONTROLS CHECK--------------//
+        if (Controls.CARGO_GROUND.uniquePress()){
+            StateManager.cargoState = CARGOSTATE.IN;
+        }
+        if (Controls.FIRE.get()) {
+            StateManager.cargoState = CARGOSTATE.OUT;
+        }
         
-        //DRIVEBASE
+        //---------------DRIVEBASE-----------------//
         switch (StateManager.driveState) {
             case DRIVING:
                 RobotMap.mDrivebase.driveByJoystick();
@@ -24,8 +32,8 @@ public class TeleopLoop {
             case TURN_BY_GYRO:  //as above
         }
 
-        //MANIPULATOR
-
+        //--------------MANIPULATOR----------------//
+        //Wrist
         switch (StateManager.wristState) {
             case INACTIVE:
                 //stop method
@@ -39,6 +47,36 @@ public class TeleopLoop {
                 }
                 break;
         }
+
+        //Cargo Intake
+        switch (StateManager.cargoState)  {
+            case INACTIVE:
+                RobotMap.mManipulator.stopCargoWheels();
+                break;
+            case IN:
+                RobotMap.mManipulator.cargoIntake(true);
+                if (RobotMap.mManipulator.isCargoIn()){
+                    StateManager.cargoState = CARGOSTATE.INACTIVE;
+                }
+                break;
+            case OUT:
+                RobotMap.mManipulator.cargoIntake(false);
+                if (Controls.FIRE.uniqueRelease()){
+                    StateManager.cargoState = CARGOSTATE.INACTIVE;
+                }
+                break;
+        }
+
+        //Hatch Intake
+        switch (StateManager.hatchState){
+            case IN:
+                RobotMap.mManipulator.hatchIntake(true);
+                break;
+            case OUT:
+                RobotMap.mManipulator.hatchIntake(false);
+                break;
+        }
+
     }
 
     public void cargoFloorIntakeSetup(){

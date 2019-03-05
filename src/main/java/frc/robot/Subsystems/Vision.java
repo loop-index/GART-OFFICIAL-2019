@@ -49,6 +49,15 @@ public class Vision extends Subsystem {
   public double getDistanceError(){
     return distanceEntry.getDouble(0) - distanceOffset; 
   }
+
+  public boolean arrivedAtTarget(){
+    if (Math.abs(getCenterError()) < ((getDistanceError() > 150) ? 20 : 40)){
+      if (getDistanceError() < 50){
+        return true;
+      }
+    }
+    return false;
+  }
   
   @Override
   public void initDefaultCommand() {

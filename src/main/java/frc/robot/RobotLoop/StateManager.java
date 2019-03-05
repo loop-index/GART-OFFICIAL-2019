@@ -67,7 +67,9 @@ public class StateManager {
 
     //VISION
     public static enum VISIONSTATE {
-
+        INACTIVE,
+        ISTRACKING, 
+        ARRIVED,
     }
 
     public static VISIONSTATE visionState; // vision state representation
