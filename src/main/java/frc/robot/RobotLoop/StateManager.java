@@ -13,7 +13,7 @@ public class StateManager {
         MOVE_BY_ENCODER,
     }
 
-    public static DRIVESTATE driveState; // drivebase state representation
+    public static DRIVESTATE driveState = DRIVESTATE.DRIVING; // drivebase state representation
     public static double desiredDistance;
     public static double desiredAngle;
 
@@ -23,7 +23,7 @@ public class StateManager {
         MOVING,
     }
 
-    public static ELEVATORSTATE elevatorState; // elevator state representation
+    public static ELEVATORSTATE elevatorState = ELEVATORSTATE.INACTIVE; // elevator state representation
     public static double desiredHeight;
 
     //MANIPULATOR
@@ -32,7 +32,7 @@ public class StateManager {
         MOVING,
     }
 
-    public static WRISTSTATE wristState; // wrist state representation
+    public static WRISTSTATE wristState = WRISTSTATE.INACTIVE; // wrist state representation
     public static double desiredWristAngle;
 
     public static enum CARGOSTATE {
@@ -41,14 +41,14 @@ public class StateManager {
         OUT,
     }
 
-    public static CARGOSTATE cargoState; // cargo state representation
+    public static CARGOSTATE cargoState = CARGOSTATE.INACTIVE; // cargo state representation
 
     public static enum HATCHSTATE {
         IN,
         OUT,
     }
 
-    public static HATCHSTATE hatchState; // hatch state representation
+    public static HATCHSTATE hatchState = HATCHSTATE.OUT; // hatch state representation
 
     //CLIMBER
     public static enum WHEELSTATE {
@@ -56,14 +56,14 @@ public class StateManager {
         ENDGAME,
     }
 
-    public static WHEELSTATE wheelState; // climb wheels state representation
+    public static WHEELSTATE wheelState = WHEELSTATE.INACTIVE; // climb wheels state representation
 
     public static enum CYLINDERSTATE {
         INACTIVE, 
         ENDGAME,
     }
 
-    public static CYLINDERSTATE cylinderState; // climb cylinders state representation
+    public static CYLINDERSTATE cylinderState = CYLINDERSTATE.INACTIVE; // climb cylinders state representation
 
     //VISION
     public static enum VISIONSTATE {
@@ -72,5 +72,5 @@ public class StateManager {
         ARRIVED,
     }
 
-    public static VISIONSTATE visionState; // vision state representation
+    public static VISIONSTATE visionState = VISIONSTATE.INACTIVE; // vision state representation
 }

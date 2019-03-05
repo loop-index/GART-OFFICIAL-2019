@@ -4,6 +4,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotLoop.StateManager;
+import frc.robot.RobotLoop.TeleopLoop;
+import frc.robot.RobotLoop.StateManager.WRISTSTATE;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -42,13 +45,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    
+    StateManager.desiredHeight = 0;
+    StateManager.wristState = WRISTSTATE.MOVING;
   }
 
   @Override
   public void teleopPeriodic() {
     //control loop
-    RobotMap.mDrivebase.driveByJoystick();
+    // RobotMap.mDrivebase.driveByJoystick();
+    new TeleopLoop();
   }
 
   @Override

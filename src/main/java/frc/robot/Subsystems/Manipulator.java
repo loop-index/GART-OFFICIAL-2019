@@ -1,6 +1,8 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -14,7 +16,8 @@ public class Manipulator extends Subsystem {
 
   //---HARDWARE---//
 
-  VictorSP wrist = new VictorSP(RobotMap.WRIST_VICTOR);
+  // VictorSP wrist = new VictorSP(RobotMap.WRIST_VICTOR);
+  WPI_TalonSRX wrist = new WPI_TalonSRX(2);
   AnalogInput wristEncoder = new AnalogInput(RobotMap.ANALOG_ENCODER);
 
   VictorSP upperWheel = new VictorSP(RobotMap.UPPER_INTAKE);
