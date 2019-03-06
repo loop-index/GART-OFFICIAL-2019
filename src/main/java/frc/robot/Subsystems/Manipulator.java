@@ -55,12 +55,13 @@ public class Manipulator extends Subsystem {
 
     if (ERROR > 0) {
       kP = ArmConstants.kP_UP;
-      output = Utils.limitNumber((ERROR) * kP, -ArmConstants.maxIntakeOutput, ArmConstants.maxIntakeOutput);
+      output = Utils.limitNumber((ERROR) * kP, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
     } else {
       kP = ArmConstants.kP_DOWN;
-      output = Utils.limitNumber((ERROR) * kP, -ArmConstants.maxIntakeOutput, ArmConstants.maxIntakeOutput);
+      output = Utils.limitNumber((ERROR + 14) * kP, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
     }
     wrist.set(output);
+    //14 - compensating number...acts as feedforward but needs improvements
   }
 
   public boolean wristOnTarget(){

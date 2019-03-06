@@ -35,9 +35,10 @@ public class ArmConstants {
     //intake constants
     public static double maxIntakeOutput = 0.6;
     public static double maxFireOutput = -1;
+    public static double maxManipulatorOutput = 0.8;
 
     //PID gains
-    public static double kP_UP = 2.3*maxIntakeOutput/rangeOfMovement;
-    public static double kP_DOWN = 0.7*maxIntakeOutput/rangeOfMovement;
+    public static double kP_UP = 2.3*maxManipulatorOutput/rangeOfMovement;
+    public static double kP_DOWN = 0.7*maxManipulatorOutput/rangeOfMovement;
 
 }
