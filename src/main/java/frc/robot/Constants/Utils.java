@@ -5,27 +5,59 @@ import java.util.Arrays;
 
 public class Utils {
 
+	/**
+	 * Get the median of inputs
+	 * @param a inputs
+	 * @return median of inputs
+	 */
     public static double getMedian(double... a){
 		Arrays.sort(a);
 		return a[(a.length-1)/2];
 	}
 
+	/**
+	 * convert centimeters to steps
+	 */
 	public static double cmToSteps(double cm, double gearRatio, double ppr, double wheelRadius) {
 		return cm*(gearRatio*ppr)/(wheelRadius*2*Math.PI);
 	}
 
+	/**
+	 * convert encoder steps to centimeters
+	 * @param steps number of encoder steps
+	 * @param gearRatio ratio input : output (?)
+	 * @param ppr pulse per revolution
+	 * @param wheelRadius wheel radius in centimeters
+	 * @return calculated results
+	 */
 	public static double stepsToCm(double steps, double gearRatio, double ppr, double wheelRadius) {
 		return steps*(wheelRadius*2*Math.PI)/(gearRatio*ppr);
 	}
 	
+	/**
+	 * Convert degrees to radians
+	 * @param degs degrees
+	 * @return radians
+	 */
 	public static double d2r(double degs) {
 		return degs*Math.PI/180;
 	}
 	
+	/**
+	 * Convert radians to degrees
+	 * @param rads radians
+	 * @return degrees
+	 */
 	public static double r2d(double rads) {
 		return rads*180/Math.PI;
 	}
 	
+	/**
+	 * Keep remainder positive
+	 * @param x Divider
+	 * @param y Divisor
+	 * @return positive remainder
+	 */
 	public static double mod(double x, double y) {
 		double result = x % y;
 		while (result < 0) {
@@ -39,6 +71,11 @@ public class Utils {
 		return mod(angle,360);
 	}
 	
+	/**
+	 * bound values to -180 to 180
+	 * @param angle_degrees angle
+	 * @return modified angle
+	 */
 	public static double boundHalfDegrees(double angle_degrees) {
 		double result = angle_degrees;
         while (result >= 180.0) result -= 360.0;

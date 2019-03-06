@@ -1,8 +1,10 @@
 
 package frc.robot.RobotLoop;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Controls;
 import frc.robot.RobotMap;
+import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.StateManager.CARGOSTATE;
 import frc.robot.RobotLoop.StateManager.ELEVATORSTATE;
@@ -12,6 +14,44 @@ import frc.robot.RobotLoop.StateManager.WRISTSTATE;
  * Essentially teleopPeriodic(), but written here for legibility
  */
 public class TeleopLoop {
+
+    public static void teleopLoop(){
+        RobotMap.mManipulator.updateSensors();
+
+        if (Controls.TEST.uniquePress()){
+            StateManager.cargoState = CARGOSTATE.IN;
+        }
+
+        if (StateManager.cargoState == CARGOSTATE.IN && !RobotMap.mManipulator.isCargoIn()) {
+          RobotMap.mManipulator.cargoIntake();
+        } 
+
+        if (StateManager.cargoState == CARGOSTATE.IN && RobotMap.mManipulator.isCargoIn()){
+            StateManager.cargoState = CARGOSTATE.INACTIVE;
+            RobotMap.mManipulator.stopCargoWheels();
+        }
+        
+        if (Controls.joystick.getRawButton(2)) {
+          RobotMap.mManipulator.cargoFire();
+        } else if (StateManager.cargoState == CARGOSTATE.INACTIVE) {
+          RobotMap.mManipulator.stopCargoWheels();
+        }
+    
+        if (Controls.joystick.getRawButton(4)) {
+          StateManager.targetAngle = 0;
+        } else if (Controls.joystick.getRawButton(1)) {
+          StateManager.targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 10;
+          //10 is like ffwd but must be change for official use
+        } else if (Controls.joystick.getRawButton(10)) {
+          // StateManager.targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
+          StateManager.targetAngle = 35;
+        }
+    
+        RobotMap.mClimber.joystickTest();
+    
+        RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
+        SmartDashboard.putNumber("target", StateManager.targetAngle);
+    }
 
     public TeleopLoop (){
         //-------------CONTROLS CHECK--------------//
@@ -43,7 +83,7 @@ public class TeleopLoop {
                 break;
 
             case MOVING:
-                RobotMap.mManipulator.setWristAngle(StateManager.desiredWristAngle);
+                RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
                 
                 if (RobotMap.mManipulator.wristOnTarget()){
                     StateManager.wristState = WRISTSTATE.INACTIVE;
@@ -56,19 +96,19 @@ public class TeleopLoop {
             case INACTIVE:
                 RobotMap.mManipulator.stopCargoWheels();
                 break;
-            //commented for implementing new methods
-            // case IN:
-            //     RobotMap.mManipulator.cargoIntake(true);
-            //     if (RobotMap.mManipulator.isCargoIn()){
-            //         StateManager.cargoState = CARGOSTATE.INACTIVE;
-            //     }
-            //     break;
-            // case OUT:
-            //     RobotMap.mManipulator.cargoIntake(false);
-            //     if (Controls.FIRE.uniqueRelease()){
-            //         StateManager.cargoState = CARGOSTATE.INACTIVE;
-            //     }
-            //     break;
+            // commented for implementing new methods
+            case IN:
+                RobotMap.mManipulator.cargoIntake();
+                if (RobotMap.mManipulator.isCargoIn()){
+                    StateManager.cargoState = CARGOSTATE.INACTIVE;
+                }
+                break;
+            case OUT:
+                RobotMap.mManipulator.cargoFire();
+                if (Controls.FIRE.uniqueRelease()){
+                    StateManager.cargoState = CARGOSTATE.INACTIVE;
+                }
+                break;
         }
 
         //Hatch Intake
@@ -86,7 +126,7 @@ public class TeleopLoop {
     public void cargoFloorIntakeSetup(){
         if (Controls.floorIntakeTrigger()){
             StateManager.desiredHeight = 0; //placeholder
-            StateManager.desiredWristAngle = 0; //placeholder
+            StateManager.targetAngle = 0; //placeholder
 
             StateManager.wristState = WRISTSTATE.MOVING;
             StateManager.elevatorState = ELEVATORSTATE.MOVING;

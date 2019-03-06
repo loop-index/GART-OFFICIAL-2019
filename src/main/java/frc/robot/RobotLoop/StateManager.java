@@ -33,7 +33,7 @@ public class StateManager {
     }
 
     public static WRISTSTATE wristState = WRISTSTATE.INACTIVE; // wrist state representation
-    public static double desiredWristAngle;
+    public static double targetAngle;
 
     public static enum CARGOSTATE {
         INACTIVE,
