@@ -35,6 +35,9 @@ public class Manipulator extends Subsystem {
 
   //--------------//
   //variables
+  double momentOfGravity;
+  double ffVoltage;
+
   double targetAngle;
   double ERROR;
   double totalError;
@@ -143,7 +146,10 @@ public class Manipulator extends Subsystem {
 
   //needs more data to complete
   public double getFeedForward() {
-    return 1;
+    //function: T = 31/250 + 89/1750 * V
+    momentOfGravity = (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever * Math.cos(Utils.d2r(getWristAngle()))) / ManipulatorConstants.totalRatio;
+    ffVoltage = (momentOfGravity - 31/250)/(89/1750);
+    return ffVoltage/12;
   }
 
   @Override
