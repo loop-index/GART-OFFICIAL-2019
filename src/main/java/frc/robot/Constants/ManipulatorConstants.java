@@ -9,8 +9,8 @@ public class ManipulatorConstants {
     public static double manipulatorWeight = 6; //in kg
     public static double manipulatorLever = 0.24; //in meter
     public static double motorGearboxRatio = 100/1;
-    public static double chainWheelRatio = 18/48;
-    public static double totalRatio = motorGearboxRatio*chainWheelRatio;
+    public static double chainWheelRatio = 48/18;
+    public static double totalRatio = motorGearboxRatio * chainWheelRatio;
 
     //arm constants
     //physical arm constants
