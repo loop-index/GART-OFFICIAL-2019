@@ -40,18 +40,25 @@ public class Manipulator extends Subsystem {
   double totalError;
 
   public Manipulator() {
-    targetAngle = 0;
+    targetAngle = getWristAngle();
     ERROR = targetAngle - getWristAngle();
   }
 
   /**
    * @return returns current wrist angle in degrees, with horizontal position at 0
    */
-  private double getWristAngle(){
+  public double getWristAngle(){
     double analogValue = wristEncoder.getAverageValue();
     double angle = (analogValue - ArmConstants.ma3MinValue) * 360 / (ArmConstants.ma3MaxValue - ArmConstants.ma3MinValue);
     angle = (angle == 360) ? 0 : angle;
     return angle - ArmConstants.angleOffset;
+  }
+
+  public double getWristAngleWithoutOffset() {
+    double analogValue = wristEncoder.getAverageValue();
+    double angle = (analogValue - ArmConstants.ma3MinValue) * 360 / (ArmConstants.ma3MaxValue - ArmConstants.ma3MinValue);
+    angle = (angle == 360) ? 0 : angle;
+    return angle;
   }
 
   /**
@@ -77,21 +84,19 @@ public class Manipulator extends Subsystem {
     //14 - compensating number...acts as feedforward but needs improvements
     
     //reset integral
-    if (Utils.aeq(ERROR, targetAngle, ArmConstants.angleTolerance)) {
+    if (wristOnTarget()) {
       totalError = 0;
     }
+    //debug
+    SmartDashboard.putNumber("total error", totalError);
   }
 
   public boolean wristOnTarget(){
-    return Math.abs(StateManager.desiredWristAngle - getWristAngle()) <= ArmConstants.angleTolerance;
+    return Utils.aeq(ERROR, targetAngle, ArmConstants.angleTolerance);
   }
 
-  /**
-   * @param IN 
-   */
   public void cargoIntake(){
     double speed = ArmConstants.maxIntakeOutput;
-    // upperWheel.set(speed);
     intake.set(ControlMode.PercentOutput, speed);
   }
 
@@ -137,6 +142,7 @@ public class Manipulator extends Subsystem {
     SmartDashboard.putNumber("angle", getWristAngle());
   }
 
+  //needs more data to complete
   public double getFeedForward() {
     return 1;
   }

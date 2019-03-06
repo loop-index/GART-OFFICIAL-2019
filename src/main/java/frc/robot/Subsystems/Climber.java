@@ -11,7 +11,7 @@ public class Climber extends Subsystem {
   public VictorSP puller = new VictorSP(RobotMap.PULLER);
 
   public void joystickTest() {
-    puller.set(Utils.deadband(Controls.joystick.getRawAxis(1), 0.1));
+    puller.set(Utils.deadband(Controls.joystick.getRawAxis(1), 0.1) * 0.6);
   }
 
   @Override
