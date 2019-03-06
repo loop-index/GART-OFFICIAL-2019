@@ -14,6 +14,7 @@ public class Vision extends Subsystem {
 	NetworkTableEntry yEntry = RPi.getEntry("Y");
   NetworkTableEntry distanceEntry = RPi.getEntry("distance");
   NetworkTableEntry reso = RPi.getEntry("reso");
+  NetworkTableEntry mode = RPi.getEntry("mode");
 
 	double width_reso = reso.getDouble(0);
   double distanceOffset = 120.5;
@@ -57,6 +58,18 @@ public class Vision extends Subsystem {
       }
     }
     return false;
+  }
+
+  public String getTrackingMode(){
+    return mode.getString("");
+  }
+
+  public void toggleMode(){
+    if (getTrackingMode().equals("cargo")){
+      mode.setString("target");
+    } else {
+      mode.setString("cargo");
+    }
   }
   
   @Override

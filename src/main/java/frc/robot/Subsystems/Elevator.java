@@ -25,10 +25,10 @@ public class Elevator extends Subsystem {
 // 	public DigitalInput topStage1Switch = new DigitalInput(6);
 // 	public DigitalInput armBottomSwitch = new DigitalInput(8);
 // 	public DigitalInput armTopSwitch = new DigitalInput(7);	
-// 	public DigitalInput endOfStage1 = new DigitalInput(5);
+// 	public DigitalInput bottomStage1Switch = new DigitalInput(5);
 	
 	
-// 	DigitalInput[] switches = {topStage1Switch, armBottomSwitch, armTopSwitch, endOfStage1};
+// 	DigitalInput[] switches = {topStage1Switch, armBottomSwitch, armTopSwitch, bottomStage1Switch};
 // 	//
 
 // 	//robot status
@@ -197,6 +197,11 @@ public class Elevator extends Subsystem {
 // 	}
 
 // 	//get methods
+// public double getDesiredHeight (int level, boolean cargoMode){
+//   int mode = (cargoMode) ? 0 : 1;
+//   return ElevatorConstants.setElevatorHeight [mode][level - 1];
+// }
+
 // 	public double getHeightInCounts() {
 // 		return masterMotor.getSelectedSensorPosition();
 // 	}
@@ -214,6 +219,8 @@ public class Elevator extends Subsystem {
 // 	public double countsToHeight(double counts) {
 // 		return Utils.countsToRad(counts, ElevatorConstants.kCountsPerRevSRX)*ElevatorConstants.kEncGearRatio*ElevatorConstants.kChainWheelDiameter/2;
 // 	}
+
+
 
   @Override
   public void initDefaultCommand() {
