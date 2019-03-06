@@ -24,7 +24,7 @@ public class RobotMap {
     public static int STAGE1_UPPER_SWITCH = 0,
                         STAGE1_LOWER_SWITCH = 1,
                         STAGE2_UPPER_SWITCH = 2,
-                        STAGE3_LOWER_SWITCH = 3;
+                        STAGE2_LOWER_SWITCH = 3;
 
     //MANIPULATOR
     public static int WRIST_VICTOR = 0, 

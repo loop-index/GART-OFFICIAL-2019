@@ -6,7 +6,6 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -19,13 +18,13 @@ public class Drivebase extends Subsystem implements PIDOutput{
 
   //---HARDWARE---//
 
-  // WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.CAN_LEFT_MASTER);
-  // WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.CAN_RIGHT_MASTER);
-  // WPI_TalonSRX leftSlave = new WPI_TalonSRX(RobotMap.CAN_LEFT_FOLLOW);
-  // WPI_TalonSRX rightSlave = new WPI_TalonSRX(RobotMap.CAN_RIGHT_FOLLOW);
+  WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.CAN_LEFT_MASTER);
+  WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.CAN_RIGHT_MASTER);
+  WPI_TalonSRX leftSlave = new WPI_TalonSRX(RobotMap.CAN_LEFT_FOLLOW);
+  WPI_TalonSRX rightSlave = new WPI_TalonSRX(RobotMap.CAN_RIGHT_FOLLOW);
 
-  VictorSP leftMotor = new VictorSP(0);
-  VictorSP rightMotor = new VictorSP(1);
+  // VictorSP leftMotor = new VictorSP(0);
+  // VictorSP rightMotor = new VictorSP(1);
 
   DifferentialDrive mDrive = new DifferentialDrive(leftMotor, rightMotor);
 
@@ -41,11 +40,11 @@ public class Drivebase extends Subsystem implements PIDOutput{
   // Initialize values/devices
   public Drivebase(){
 
-    // leftSlave.follow(leftMotor);
-    // rightSlave.follow(rightMotor);
+    leftSlave.follow(leftMotor);
+    rightSlave.follow(rightMotor);
 
-    // leftMotor.setInverted(true);
-    // leftSlave.setInverted(true);
+    leftMotor.setInverted(true);
+    leftSlave.setInverted(true);
 
     NavX.reset();
   }
@@ -64,11 +63,17 @@ public class Drivebase extends Subsystem implements PIDOutput{
       leftMotor.set(leftSpeed);
       rightMotor.set(rightSpeed);
 
+      driveBySteering();
+
     } else { 
       driveByVision();
     }
+
   }
 
+  /**
+   * Drive by steering wheel
+   */
   public void driveBySteering(){
     double multiplier = 0.3;
     double driveSpeed = 0;
@@ -77,12 +82,12 @@ public class Drivebase extends Subsystem implements PIDOutput{
     if (Controls.BOOSTSPEED.get()){	
       multiplier = 0.5;
     }
-      driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
-      turn = -0.85 * Controls.steering.getRawAxis(0);
-    
-      mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
+    driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
+    turn = -0.85 * Controls.steering.getRawAxis(0);
   
-    }
+    mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
+
+  }
 
   /**
    * Drives based on coordinates returned by Raspberry Pi

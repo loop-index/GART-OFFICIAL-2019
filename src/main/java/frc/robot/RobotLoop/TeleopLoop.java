@@ -21,6 +21,9 @@ public class TeleopLoop {
         if (Controls.FIRE.get()) {
             StateManager.cargoState = CARGOSTATE.OUT;
         }
+        if (Controls.TRACKING_MODE.uniquePress()){
+            RobotMap.mVision.toggleMode();
+        }
         
         //---------------DRIVEBASE-----------------//
         switch (StateManager.driveState) {
