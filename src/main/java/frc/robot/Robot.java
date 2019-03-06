@@ -4,7 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.TeleopLoop;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     StateManager.desiredHeight = 0;
     StateManager.wristState = WRISTSTATE.MOVING;
-    targetAngle = 0;
+    targetAngle = RobotMap.mManipulator.getWristAngle();
   }
 
   @Override
@@ -69,7 +69,8 @@ public class Robot extends TimedRobot {
     if (Controls.joystick.getRawButton(4)) {
       targetAngle = 0;
     } else if (Controls.joystick.getRawButton(1)) {
-      targetAngle = ArmConstants.lowerLimit - ArmConstants.angleOffset + 5;
+      targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 10;
+      //10 is like ffwd but must be change for official use
     } else if (Controls.joystick.getRawButton(10)) {
       // targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
       targetAngle = 35;

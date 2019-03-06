@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class CustomButton extends JoystickButton {
+    boolean lastPressed;
 
     public CustomButton (GenericHID joystick, int ButtonID){
         super(joystick, ButtonID);
+        lastPressed = get();
     }
 
-    boolean lastPressed = false;
+    
  
     /**
      * @return Only returns true when the button is pressed the first time
