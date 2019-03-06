@@ -37,7 +37,7 @@ public class RobotMap {
     //CLIMBER
     public static int LEFT_CLIMBER = 3, 
                         RIGHT_CLIMBER = 4;
-
+    public static int PULLER = 2;
     //PNEUMATICS
     Compressor comp = new Compressor();
 

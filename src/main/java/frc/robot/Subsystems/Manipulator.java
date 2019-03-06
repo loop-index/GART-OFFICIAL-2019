@@ -34,6 +34,15 @@ public class Manipulator extends Subsystem {
   Solenoid hatchIntake = new Solenoid(RobotMap.HATCH_SOLENOID);
 
   //--------------//
+  //variables
+  double targetAngle;
+  double ERROR;
+  double totalError;
+
+  public Manipulator() {
+    targetAngle = 0;
+    ERROR = targetAngle - getWristAngle();
+  }
 
   /**
    * @return returns current wrist angle in degrees, with horizontal position at 0
@@ -48,20 +57,29 @@ public class Manipulator extends Subsystem {
   /**
 	 * @param angle angle to set arm to, fully upwards is a, fully downwards is b.
 	 */
+
   public void setWristAngle(double angle){
-    double ERROR = angle - getWristAngle();
+    // double ERROR = angle - getWristAngle();
+    targetAngle = angle;
+    ERROR = targetAngle - getWristAngle();
+    totalError += ERROR*0.02;
     double kP;
     double output; 
 
     if (ERROR > 0) {
       kP = ArmConstants.kP_UP;
-      output = Utils.limitNumber((ERROR) * kP, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
+      output = Utils.limitNumber((ERROR) * kP + ArmConstants.kI_UP*totalError, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
     } else {
       kP = ArmConstants.kP_DOWN;
-      output = Utils.limitNumber((ERROR + 14) * kP, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
+      output = Utils.limitNumber((ERROR) * kP, -ArmConstants.maxManipulatorOutput, ArmConstants.maxManipulatorOutput);
     }
     wrist.set(output);
     //14 - compensating number...acts as feedforward but needs improvements
+    
+    //reset integral
+    if (Utils.aeq(ERROR, targetAngle, ArmConstants.angleTolerance)) {
+      totalError = 0;
+    }
   }
 
   public boolean wristOnTarget(){

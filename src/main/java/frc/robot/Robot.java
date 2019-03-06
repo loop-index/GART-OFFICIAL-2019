@@ -69,11 +69,14 @@ public class Robot extends TimedRobot {
     if (Controls.joystick.getRawButton(4)) {
       targetAngle = 0;
     } else if (Controls.joystick.getRawButton(1)) {
-      targetAngle = ArmConstants.lowerLimit - ArmConstants.angleOffset;
+      targetAngle = ArmConstants.lowerLimit - ArmConstants.angleOffset + 5;
     } else if (Controls.joystick.getRawButton(10)) {
       // targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
       targetAngle = 35;
     }
+
+    RobotMap.mClimber.joystickTest();
+
     RobotMap.mManipulator.setWristAngle(targetAngle);
     SmartDashboard.putNumber("target", targetAngle);
   }

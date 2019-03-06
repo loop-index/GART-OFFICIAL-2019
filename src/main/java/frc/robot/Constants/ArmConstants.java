@@ -24,11 +24,11 @@ public class ArmConstants {
         * arm moves up  : angle +
         * arm moves down: angle -
     */
-    public static double angleOffset = 84.479; //arm at horizontal position
-    public static double upperLimit = 119.165; //arm at fully upwards position
-    public static double lowerLimit = 38.172; //arm at fully downwards position
+    public static double angleOffset = 147.41; //arm at horizontal position
+    public static double upperLimit = 201.23; //arm at fully upwards position
+    public static double lowerLimit = 105; //arm at fully downwards position
     public static double rangeOfMovement = upperLimit - lowerLimit;
-    public static double angleTolerance = 1;
+    public static double angleTolerance = 5;
 
     public static double CARGO_groundAngle = 38.172;
 
@@ -39,6 +39,7 @@ public class ArmConstants {
 
     //PID gains
     public static double kP_UP = 2.3*maxManipulatorOutput/rangeOfMovement;
-    public static double kP_DOWN = 0.7*maxManipulatorOutput/rangeOfMovement;
+    public static double kI_UP = 0.05;
+    public static double kP_DOWN = 0.5*maxManipulatorOutput/rangeOfMovement;
 
 }
