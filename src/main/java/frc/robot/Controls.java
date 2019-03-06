@@ -28,6 +28,7 @@ public class Controls {
     //DRIVE JOYSTICK BUTTONS
     public static CustomButton BOOSTSPEED = new CustomButton(joystick, 1);
     
+
     public static double getBoostButton(){
         return joystick.getRawAxis(2);
     }
@@ -49,5 +50,6 @@ public class Controls {
     public static boolean floorIntakeTrigger(){
         return CARGO_GROUND.uniquePress();
     }
+  
 }
 

@@ -30,14 +30,14 @@ public class RobotMap {
     public static int WRIST_VICTOR = 0, 
                         UPPER_INTAKE = 1, 
                         LOWER_INTAKE = 2;
-    public static int ANALOG_ENCODER = 0;
+    public static int ANALOG_ENCODER = 1;
     public static int HATCH_SOLENOID = 2;
-    public static int CARGO_SWITCH = 1;
+    public static int CARGO_SWITCH = 4;
 
     //CLIMBER
     public static int LEFT_CLIMBER = 3, 
                         RIGHT_CLIMBER = 4;
-
+    public static int PULLER = 2;
     //PNEUMATICS
     Compressor comp = new Compressor();
 

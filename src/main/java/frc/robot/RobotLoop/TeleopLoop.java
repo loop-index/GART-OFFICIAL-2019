@@ -56,18 +56,19 @@ public class TeleopLoop {
             case INACTIVE:
                 RobotMap.mManipulator.stopCargoWheels();
                 break;
-            case IN:
-                RobotMap.mManipulator.cargoIntake(true);
-                if (RobotMap.mManipulator.isCargoIn()){
-                    StateManager.cargoState = CARGOSTATE.INACTIVE;
-                }
-                break;
-            case OUT:
-                RobotMap.mManipulator.cargoIntake(false);
-                if (Controls.FIRE.uniqueRelease()){
-                    StateManager.cargoState = CARGOSTATE.INACTIVE;
-                }
-                break;
+            //commented for implementing new methods
+            // case IN:
+            //     RobotMap.mManipulator.cargoIntake(true);
+            //     if (RobotMap.mManipulator.isCargoIn()){
+            //         StateManager.cargoState = CARGOSTATE.INACTIVE;
+            //     }
+            //     break;
+            // case OUT:
+            //     RobotMap.mManipulator.cargoIntake(false);
+            //     if (Controls.FIRE.uniqueRelease()){
+            //         StateManager.cargoState = CARGOSTATE.INACTIVE;
+            //     }
+            //     break;
         }
 
         //Hatch Intake

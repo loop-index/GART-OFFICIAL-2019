@@ -26,7 +26,7 @@ public class Drivebase extends Subsystem implements PIDOutput{
   // VictorSP leftMotor = new VictorSP(0);
   // VictorSP rightMotor = new VictorSP(1);
 
-  DifferentialDrive mDrive = new DifferentialDrive(leftMotor, rightMotor);
+  // DifferentialDrive mDrive = new DifferentialDrive(leftMotor, rightMotor);
 
   AHRS NavX = new AHRS(RobotMap.NavXPort);
 
@@ -82,10 +82,10 @@ public class Drivebase extends Subsystem implements PIDOutput{
     if (Controls.BOOSTSPEED.get()){	
       multiplier = 0.5;
     }
-    driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
-    turn = -0.85 * Controls.steering.getRawAxis(0);
-  
-    mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
+      driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
+      turn = -0.85 * Controls.steering.getRawAxis(0);
+    
+      // mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
 
   }
 
@@ -143,6 +143,13 @@ public class Drivebase extends Subsystem implements PIDOutput{
 		} else {
       stop();
     }
+  }
+  // nghivh
+  public void left(){
+    leftMotor.set(0.3);
+  }
+  public void right() {
+    rightMotor.set(0.3);
   }
 
   /**
