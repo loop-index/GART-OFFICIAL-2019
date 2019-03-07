@@ -21,12 +21,12 @@ public class TeleopLoop {
         //Change state on control
         if (Controls.TEST.get()){
             StateManager.cargoState = CARGOSTATE.IN;
-        } 
-        else if (Controls.joystick.getRawButton(2)){
+        } else if (Controls.joystick.getRawButton(2)){
             StateManager.cargoState = CARGOSTATE.OUT;
         } else {
             StateManager.cargoState = CARGOSTATE.INACTIVE;
         }
+
         //Act according to state
         if (StateManager.cargoState == CARGOSTATE.IN && !RobotMap.mManipulator.isCargoIn()) {
           RobotMap.mManipulator.cargoIntake();

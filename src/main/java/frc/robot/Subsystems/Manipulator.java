@@ -22,7 +22,6 @@ public class Manipulator extends Subsystem {
 
   // VictorSP wrist = new VictorSP(RobotMap.WRIST_VICTOR);
   // WPI_TalonSRX wrist = new WPI_TalonSRX(2);
-  // VictorSP wrist = new VictorSP(RobotMap.WRIST_VICTOR);
   WPI_TalonSRX wrist = new WPI_TalonSRX(1);
   AnalogInput wristEncoder = new AnalogInput(RobotMap.ANALOG_ENCODER);
 
@@ -39,13 +38,13 @@ public class Manipulator extends Subsystem {
   // public double momentOfGravity = 0;
   // public double ffVoltage = 0;
 
-  double targetAngle;
+  // double targetAngle;
   double ERROR;
   double totalError;
 
   public Manipulator() {
-    targetAngle = getWristAngle();
-    ERROR = targetAngle - getWristAngle();
+    StateManager.targetAngle = getWristAngle();
+    ERROR = StateManager.targetAngle - getWristAngle();
     // getFeedForward();
   }
 
@@ -69,25 +68,23 @@ public class Manipulator extends Subsystem {
   /**
 	 * @param angle angle to set arm to, fully upwards is a, fully downwards is b.
 	 */
-
   public void setWristAngle(double angle){
     // double ERROR = angle - getWristAngle();
-    targetAngle = angle;
-    ERROR = targetAngle - getWristAngle();
+    StateManager.targetAngle = angle;
+    ERROR = StateManager.targetAngle - getWristAngle();
     totalError += ERROR*0.02;
     double kP;
     double output; 
 
     if (ERROR > 0) {
       kP = ManipulatorConstants.kP_UP;
-      output = Utils.limitNumber((ERROR) * kP, -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
+      output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
     } else {
       kP = ManipulatorConstants.kP_DOWN;
-      output = Utils.limitNumber((ERROR) * kP, -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
+      output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
     }
     wrist.set(output);
     
-    //reset integral
     if (wristOnTarget()) {
       totalError = 0;
     }
@@ -95,8 +92,11 @@ public class Manipulator extends Subsystem {
     SmartDashboard.putNumber("total error", totalError);
   }
 
+  /**
+   * @return true if the actual wrist angle is within acceptable tolerance of the desired angle
+   */
   public boolean wristOnTarget(){
-    return Utils.aeq(ERROR, targetAngle, ManipulatorConstants.angleTolerance);
+    return Utils.aeq(ERROR, StateManager.targetAngle, ManipulatorConstants.angleTolerance);
   }
 
   public void cargoIntake(){
@@ -131,13 +131,13 @@ public class Manipulator extends Subsystem {
    * Stops motors.
    */
   public void stopCargoWheels(){
-    // upperWheel.stopMotor();
-    // lowerWheel.stopMotor();
-
+    // intake.stopMotor();
     intake.set(ControlMode.PercentOutput, 0);
   }
 
-  //sensor methods
+  /**
+   * Update sensors values to SmartDashboard
+   */
   public void updateSensors() {
     SmartDashboard.putBoolean("cargo detected", isCargoIn());
     SmartDashboard.putNumber("arm angle wout offset", getWristAngleWithoutOffset());
@@ -146,11 +146,11 @@ public class Manipulator extends Subsystem {
     SmartDashboard.putNumber("angle", getWristAngle());
   }
 
-  //needs more data to complete
+  
   public double getFeedForward() {
-    //function: T = 31/250 + 89/1750 * V
+    //function: T(gravity) = 31/250 + 89/1750 * V
     double momentOfGravity = (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever * Math.cos(Utils.d2r(getWristAngle()))) / ManipulatorConstants.totalRatio;
-    double ffVoltage = (momentOfGravity - 31.0/250)/(89.0/1750);
+    double ffVoltage = (momentOfGravity - 31.0/250)/(-89.0/1750);
 
     SmartDashboard.putNumber("kfnd", (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever/ ManipulatorConstants.totalRatio));
     SmartDashboard.putNumber("moment", momentOfGravity);
