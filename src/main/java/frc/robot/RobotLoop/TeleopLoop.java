@@ -21,7 +21,7 @@ public class TeleopLoop {
         //Change state on control
         if (Controls.TEST.get()){
             StateManager.cargoState = CARGOSTATE.IN;
-        } else if (Controls.joystick.getRawButton(2)){
+        } else if (Controls.control_panel.getRawButton(2)){
             StateManager.cargoState = CARGOSTATE.OUT;
         } else {
             StateManager.cargoState = CARGOSTATE.INACTIVE;
@@ -41,16 +41,16 @@ public class TeleopLoop {
           RobotMap.mManipulator.stopCargoWheels();
         }
     
-        if (Controls.joystick.getRawButton(4)) {
+        if (Controls.control_panel.getRawButton(4)) {
           StateManager.targetAngle = 0;
-        } else if (Controls.joystick.getRawButton(1)) {
-          StateManager.targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 10;
-        } else if (Controls.joystick.getRawButton(10)) {
+        } else if (Controls.control_panel.getRawButton(1)) {
+          StateManager.targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 5;
+        } else if (Controls.control_panel.getRawButton(10)) {
           // StateManager.targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
-          StateManager.targetAngle = 35;
+          StateManager.targetAngle = 25;
         }
     
-        // RobotMap.mClimber.joystickTest();
+        //HATCH
         if (Controls.HATCH_TEST.uniquePress()) {
             RobotMap.mManipulator.hatchLocked = !RobotMap.mManipulator.hatchLocked;
         }
@@ -58,6 +58,9 @@ public class TeleopLoop {
 
         RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
         SmartDashboard.putNumber("target", StateManager.targetAngle);
+
+        //DRIVE
+        RobotMap.mDrivebase.driveByJoystick();
     }
 
     public TeleopLoop (){

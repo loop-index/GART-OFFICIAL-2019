@@ -20,15 +20,15 @@ public class Controls {
     public static CustomButton LEVEL_2 = new CustomButton(control_panel, 5);
     public static CustomButton LEVEL_3 = new CustomButton(control_panel, 4);
 
-    public static CustomButton CARGO_STATION = new CustomButton(control_panel, 0); //
+    public static CustomButton CARGO_STATION = new CustomButton(control_panel, 1); //
     public static CustomButton CARGO_GROUND = new CustomButton(control_panel, 8);
-    public static CustomButton HATCH_STATION = new CustomButton(control_panel, 0); //
-    public static CustomButton TRACKING_MODE = new CustomButton(joystick, 0); //
+    public static CustomButton HATCH_STATION = new CustomButton(control_panel, 1); //
+    public static CustomButton TRACKING_MODE = new CustomButton(joystick, 1); //
 
     //DRIVE JOYSTICK BUTTONS
-    public static CustomButton BOOSTSPEED = new CustomButton(joystick, 1);
-    public static CustomButton TEST = new CustomButton(joystick, 3);
-    public static CustomButton HATCH_TEST = new CustomButton(joystick, 9);
+    // public static CustomButton BOOSTSPEED = new CustomButton(joystick, 1);
+    public static CustomButton TEST = new CustomButton(control_panel, 3);
+    public static CustomButton HATCH_TEST = new CustomButton(control_panel, 9);
 
     public static double getBoostButton(){
         return joystick.getRawAxis(2);
@@ -37,7 +37,8 @@ public class Controls {
     //CONTROL METHODS
     public static boolean getVisionTrigger(){
         int visionTrigger = 2;
-        return joystick.getRawAxis(visionTrigger) > 0.5;
+        // return joystick.getRawAxis(visionTrigger) > 0.5;
+        return joystick.getRawButton(visionTrigger);
     }
 
     public static double getLeftJoystick(){
