@@ -57,6 +57,7 @@ public class TeleopLoop {
     }
 
     public TeleopLoop (){
+
         //-------------CONTROLS CHECK--------------//
         if (Controls.CARGO_GROUND.uniquePress()){
             StateManager.cargoState = CARGOSTATE.IN;
@@ -86,7 +87,7 @@ public class TeleopLoop {
                 break;
 
             case MOVING:
-                RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
+                // RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
                 
                 if (RobotMap.mManipulator.wristOnTarget()){
                     StateManager.wristState = WRISTSTATE.INACTIVE;

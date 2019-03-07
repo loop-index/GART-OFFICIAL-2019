@@ -197,6 +197,11 @@ public class Elevator extends Subsystem {
 // 	}
 
 // 	//get methods
+// public double getDesiredHeight (int level, boolean cargoMode){
+//   int mode = (cargoMode) ? 0 : 1;
+//   return ElevatorConstants.setElevatorHeight [mode][level - 1];
+// }
+
 // 	public double getHeightInCounts() {
 // 		return masterMotor.getSelectedSensorPosition();
 // 	}

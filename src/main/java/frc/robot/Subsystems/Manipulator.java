@@ -34,7 +34,11 @@ public class Manipulator extends Subsystem {
 
   // Solenoid hatchIntake = new Solenoid(RobotMap.HATCH_SOLENOID);
 
-  //---VARIABLES---//
+  //--------------//
+  //variables
+  // public double momentOfGravity = 0;
+  // public double ffVoltage = 0;
+
   double targetAngle;
   double ERROR;
   double totalError;
@@ -42,6 +46,7 @@ public class Manipulator extends Subsystem {
   public Manipulator() {
     targetAngle = getWristAngle();
     ERROR = targetAngle - getWristAngle();
+    // getFeedForward();
   }
 
   /**
@@ -143,7 +148,16 @@ public class Manipulator extends Subsystem {
 
   //needs more data to complete
   public double getFeedForward() {
-    return 1;
+    //function: T = 31/250 + 89/1750 * V
+    double momentOfGravity = (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever * Math.cos(Utils.d2r(getWristAngle()))) / ManipulatorConstants.totalRatio;
+    double ffVoltage = (momentOfGravity - 31.0/250)/(89.0/1750);
+
+    SmartDashboard.putNumber("kfnd", (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever/ ManipulatorConstants.totalRatio));
+    SmartDashboard.putNumber("moment", momentOfGravity);
+    SmartDashboard.putNumber("ff volt", ffVoltage);
+    System.out.println(ffVoltage);
+    SmartDashboard.putNumber("ff", ffVoltage/12);
+    return ffVoltage/12;
   }
 
   @Override

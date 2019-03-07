@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ManipulatorConstants;
+import frc.robot.Constants.Utils;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.TeleopLoop;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
@@ -56,7 +57,9 @@ public class Robot extends TimedRobot {
     //control loop
     // RobotMap.mDrivebase.driveByJoystick();
     // new TeleopLoop();
-    TeleopLoop.teleopLoop();
+    // TeleopLoop.teleopLoop();
+    RobotMap.mManipulator.getFeedForward();
+    SmartDashboard.putNumber("cos angle in rad", Math.cos(Utils.d2r(RobotMap.mManipulator.getWristAngle())));
   }
 
   @Override
