@@ -60,6 +60,7 @@ public class TeleopLoop {
         SmartDashboard.putNumber("target", StateManager.targetAngle);
     }
 
+    //unused
     public TeleopLoop (){
 
         //-------------CONTROLS CHECK--------------//

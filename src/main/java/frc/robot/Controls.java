@@ -23,6 +23,7 @@ public class Controls {
     public static CustomButton CARGO_STATION = new CustomButton(control_panel, 0); //
     public static CustomButton CARGO_GROUND = new CustomButton(control_panel, 8);
     public static CustomButton HATCH_STATION = new CustomButton(control_panel, 0); //
+    public static CustomButton INTAKE = new CustomButton(control_panel, 10);
     public static CustomButton TRACKING_MODE = new CustomButton(joystick, 0); //
 
     //DRIVE JOYSTICK BUTTONS
