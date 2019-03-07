@@ -156,7 +156,7 @@ public class Manipulator extends Subsystem {
 
     SmartDashboard.putNumber("moment", momentOfGravity);
     SmartDashboard.putNumber("ff volt", ffVoltage);
-    System.out.println(ffVoltage);
+    // System.out.println(ffVoltage);
     SmartDashboard.putNumber("ff", ffVoltage/12);
     return ffVoltage/12;
   }

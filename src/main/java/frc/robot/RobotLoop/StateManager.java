@@ -74,4 +74,9 @@ public class StateManager {
     }
 
     public static VISIONSTATE visionState = VISIONSTATE.INACTIVE; // vision state representation
+
+    public static enum MODE {
+        CARGO,
+        HATCH,
+    }
 }
