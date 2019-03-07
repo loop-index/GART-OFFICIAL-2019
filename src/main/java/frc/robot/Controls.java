@@ -28,6 +28,7 @@ public class Controls {
     //DRIVE JOYSTICK BUTTONS
     public static CustomButton BOOSTSPEED = new CustomButton(joystick, 1);
     public static CustomButton TEST = new CustomButton(joystick, 3);
+    public static CustomButton HATCH_TEST = new CustomButton(joystick, 9);
 
     public static double getBoostButton(){
         return joystick.getRawAxis(2);

@@ -50,8 +50,12 @@ public class TeleopLoop {
           StateManager.targetAngle = 35;
         }
     
-        RobotMap.mClimber.joystickTest();
-    
+        // RobotMap.mClimber.joystickTest();
+        if (Controls.HATCH_TEST.uniquePress()) {
+            RobotMap.mManipulator.hatchLocked = !RobotMap.mManipulator.hatchLocked;
+        }
+        RobotMap.mManipulator.lockHatch(RobotMap.mManipulator.hatchLocked);
+
         RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
         SmartDashboard.putNumber("target", StateManager.targetAngle);
     }
@@ -118,10 +122,10 @@ public class TeleopLoop {
         //Hatch Intake
         switch (StateManager.hatchState){
             case IN:
-                RobotMap.mManipulator.hatchIntake(true);
+                RobotMap.mManipulator.lockHatch(true);
                 break;
             case OUT:
-                RobotMap.mManipulator.hatchIntake(false);
+                RobotMap.mManipulator.lockHatch(false);
                 break;
         }
 

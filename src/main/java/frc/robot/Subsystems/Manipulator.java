@@ -7,8 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -32,11 +34,11 @@ public class Manipulator extends Subsystem {
   DigitalInput cargoDetect = new DigitalInput(RobotMap.CARGO_SWITCH);
 
   // Solenoid hatchIntake = new Solenoid(RobotMap.HATCH_SOLENOID);
+  DoubleSolenoid hatchIntake = new DoubleSolenoid(0, 1);
 
   //--------------//
   //variables
-  // public double momentOfGravity = 0;
-  // public double ffVoltage = 0;
+  public boolean hatchLocked;
 
   // double targetAngle;
   double ERROR;
@@ -45,7 +47,7 @@ public class Manipulator extends Subsystem {
   public Manipulator() {
     StateManager.targetAngle = getWristAngle();
     ERROR = StateManager.targetAngle - getWristAngle();
-    // getFeedForward();
+    hatchLocked = false;
   }
 
   /**
@@ -117,14 +119,14 @@ public class Manipulator extends Subsystem {
   }
 
   /**
-   * @param IN
+   * @param TF
    */
-  public void hatchIntake(boolean IN){
-    // if (IN) {
-    //   hatchIntake.set(true);
-    // } else {
-    //   hatchIntake.set(false);
-    // }
+  public void lockHatch(boolean TF){
+    if (TF) {
+      hatchIntake.set(Value.kForward);
+    } else {
+      hatchIntake.set(Value.kReverse);
+    }
   }
 
   /**
@@ -150,9 +152,8 @@ public class Manipulator extends Subsystem {
   public double getFeedForward() {
     //function: T(gravity) = 31/250 + 89/1750 * V
     double momentOfGravity = (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever * Math.cos(Utils.d2r(getWristAngle()))) / ManipulatorConstants.totalRatio;
-    double ffVoltage = (momentOfGravity - 31.0/250)/(-89.0/1750);
+    double ffVoltage = (-1.0)*(momentOfGravity - 31.0/250)/(89.0/1750);
 
-    SmartDashboard.putNumber("kfnd", (ManipulatorConstants.manipulatorWeight * ManipulatorConstants.g * ManipulatorConstants.manipulatorLever/ ManipulatorConstants.totalRatio));
     SmartDashboard.putNumber("moment", momentOfGravity);
     SmartDashboard.putNumber("ff volt", ffVoltage);
     System.out.println(ffVoltage);

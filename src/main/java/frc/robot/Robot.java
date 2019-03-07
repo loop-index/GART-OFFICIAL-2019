@@ -57,8 +57,8 @@ public class Robot extends TimedRobot {
     //control loop
     // RobotMap.mDrivebase.driveByJoystick();
     // new TeleopLoop();
-    // TeleopLoop.teleopLoop();
-    RobotMap.mManipulator.getFeedForward();
+    TeleopLoop.teleopLoop();
+    // RobotMap.mManipulator.getFeedForward();
     SmartDashboard.putNumber("cos angle in rad", Math.cos(Utils.d2r(RobotMap.mManipulator.getWristAngle())));
   }
 
