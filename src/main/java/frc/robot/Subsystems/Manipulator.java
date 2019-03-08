@@ -80,6 +80,7 @@ public class Manipulator extends Subsystem {
 
     if (ERROR > 0) {
       kP = ManipulatorConstants.kP_UP;
+      kP = (ERROR < ManipulatorConstants.smallError && ERROR > ManipulatorConstants.epsilon) ? kP : kP*2;
       output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
     } else {
       kP = ManipulatorConstants.kP_DOWN;

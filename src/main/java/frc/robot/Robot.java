@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
-    StateManager.desiredHeight = 0;
+    StateManager.targetHeight = 0;
     StateManager.wristState = WRISTSTATE.MOVING;
     StateManager.targetAngle = RobotMap.mManipulator.getWristAngle();
   }

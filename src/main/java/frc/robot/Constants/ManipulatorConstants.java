@@ -2,9 +2,9 @@ package frc.robot.Constants;
 
 public class ManipulatorConstants {
     /*
-        * ARM CONTAINS ARM AND INTAKE
+        * MANIPULATOR CONTAINS ARM AND INTAKE
     */
-    //common constants
+    //COMMON CONSTANTS
     public final static double g = 9.8; //in m/s, gravity acceleration
     public static double manipulatorWeight = 6; //in kg
     public static double manipulatorLever = 0.24; //in meter
@@ -22,7 +22,7 @@ public class ManipulatorConstants {
     public static double ma3MinValue = 11.0;
     public static double ma3MaxValue = 4038.0;
 
-    //set angles ----- all in DEGREES
+    //SET ANGLES ----- all in DEGREES
     /*
         * arm moves up  : angle +
         * arm moves down: angle -
@@ -33,9 +33,20 @@ public class ManipulatorConstants {
     public static double rangeOfMovement = upperLimit - lowerLimit;
     public static double angleTolerance = 10;
 
-    public static double CARGO_groundAngle = 38.172;
+    //intake angles
+    public static double CARGO_groundIntakeAngle = -38.172;
+    public static double CARGO_stationIntakeAngle;
+    public static double HATCH_intakeAngle;
 
-    //intake constants
+    //fire angles
+    public static double CARGO_LV1Angle;
+    public static double CARGO_LV2Angle;
+    public static double CARGO_LV3Angle;  
+    public static double HATCH_LV1Angle;
+    public static double HATCH_LV2Angle;
+    public static double HATCH_LV3Angle;
+
+    //INTAKE CONSTANTS
     public static double maxIntakeOutput = 0.8;
     public static double maxFireOutput = -1;
     public static double maxManipulatorOutput = 0.8;
@@ -44,7 +55,13 @@ public class ManipulatorConstants {
     public static double cargoFireTimeout = 1; //sec
     public static double cargoIntakeTimeout = 1; //sec
 
-    //PID gains
+    //PID GAINS
+    //if the error is less than smallError we need to increase gains for better correction
+    //However, if the gain is too high, the mechanism will oscillates
+    //Therefore, if (error < smallError && error > epsilon), increase PID gains
+    public static double smallError = 7;
+    public static double epsilon = 1;
+
     public static double kP_UP = 2.3*maxManipulatorOutput/rangeOfMovement;
     public static double kI_UP = 0.03;
     public static double kP_DOWN = 0.5*maxManipulatorOutput/rangeOfMovement;

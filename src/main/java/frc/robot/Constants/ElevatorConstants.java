@@ -58,7 +58,7 @@ public class ElevatorConstants {
     public final static double HATCH_level2Height = 119.392;
     public final static double HATCH_level3Height = 0;
 
-    public double[][] setElevatorHeight = {{CARGO_level1Height, CARGO_level2Height, CARGO_level3Height}, //cargoHeight
+    public static double[][] setElevatorHeight = {{CARGO_level1Height, CARGO_level2Height, CARGO_level3Height}, //cargoHeight
                                          {HATCH_level1Height, HATCH_level2Height, HATCH_level3Height}}; //hatchHeight
 
     //elevator states

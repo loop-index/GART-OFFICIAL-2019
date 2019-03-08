@@ -8,6 +8,7 @@ import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.StateManager.CARGOSTATE;
 import frc.robot.RobotLoop.StateManager.ELEVATORSTATE;
+import frc.robot.RobotLoop.StateManager.MODE;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
 
 /**
@@ -16,6 +17,7 @@ import frc.robot.RobotLoop.StateManager.WRISTSTATE;
 public class TeleopLoop {
 
     public static void teleopLoop(){
+        /* TEST CODE WITH GAMEPAD****************************
         // RobotMap.mManipulator.updateSensors();
 
         // //Change state on control
@@ -61,7 +63,9 @@ public class TeleopLoop {
 
         // //DRIVE
         // RobotMap.mDrivebase.driveByJoystick();
+        ****************************/
 
+        /*TEST CODE WITH CUSTOM CONTROL PANEL*/
         RobotMap.mManipulator.updateSensors();
 
         //Change state on control
@@ -92,7 +96,6 @@ public class TeleopLoop {
         } else if (Controls.LEVEL_1.get()) {
           StateManager.targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 5;
         } else if (Controls.LEVEL_3.get()) {
-          // StateManager.targetAngle = ArmConstants.upperLimit - ArmConstants.angleOffset;
           StateManager.targetAngle = 22;
         }
     
@@ -107,6 +110,26 @@ public class TeleopLoop {
 
         //DRIVE
         RobotMap.mDrivebase.driveByJoystick();
+
+        /************************MAIN CODE***************/
+        /***********IN PROGRESS, DO NOT DELETE THIS*************/
+        // RobotMap.mManipulator.updateSensors();
+
+        // //CHANGE MODE
+        // if (Controls.CARGO_MODE.uniquePress()) {
+        //     StateManager.mode = MODE.CARGO;
+        // } else if (Controls.HATCH_MODE.uniquePress()) {
+        //     StateManager.mode = MODE.HATCH;
+        // }
+
+        // if (Controls.LEVEL_2.get()) {
+        //     StateManager.targetAngle = 0;
+        //   } else if (Controls.LEVEL_1.get()) {
+        //     StateManager.targetAngle = ManipulatorConstants.lowerLimit - ManipulatorConstants.angleOffset + 5;
+        //   } else if (Controls.LEVEL_3.get()) {
+        //     StateManager.targetAngle = 22;
+        //   }
+
     }
 
     //unused
@@ -183,7 +206,7 @@ public class TeleopLoop {
 
     public void cargoFloorIntakeSetup(){
         if (Controls.floorIntakeTrigger()){
-            StateManager.desiredHeight = 0; //placeholder
+            StateManager.targetHeight = 0; //placeholder
             StateManager.targetAngle = 0; //placeholder
 
             StateManager.wristState = WRISTSTATE.MOVING;

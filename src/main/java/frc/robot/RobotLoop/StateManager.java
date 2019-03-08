@@ -24,7 +24,7 @@ public class StateManager {
     }
 
     public static ELEVATORSTATE elevatorState = ELEVATORSTATE.INACTIVE; // elevator state representation
-    public static double desiredHeight;
+    public static double targetHeight;
 
     //MANIPULATOR
     public static enum WRISTSTATE {
@@ -75,8 +75,10 @@ public class StateManager {
 
     public static VISIONSTATE visionState = VISIONSTATE.INACTIVE; // vision state representation
 
+    //CARGO/HATCH MODE
     public static enum MODE {
         CARGO,
         HATCH,
     }
+    public static MODE mode = MODE.CARGO; //INIT MODE IS CARGO
 }
