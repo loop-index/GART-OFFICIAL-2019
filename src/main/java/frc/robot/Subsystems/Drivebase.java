@@ -58,6 +58,7 @@ public class Drivebase extends Subsystem implements PIDOutput{
   public void driveByJoystick(){
 
     if (!Controls.getVisionTrigger()){ 
+      // lmao this is the code for using the actual joysticks but yeah sure this is even more misleading than 
       // leftSpeed = Utils.getMedian(Controls.getLeftJoystick() * 0.5, leftSpeed + DriveConst.maxAcc, leftSpeed - DriveConst.maxAcc);
 		  // rightSpeed = Utils.getMedian(Controls.getRightJoystick() * 0.5, rightSpeed + DriveConst.maxAcc, rightSpeed - DriveConst.maxAcc);
       
@@ -79,13 +80,14 @@ public class Drivebase extends Subsystem implements PIDOutput{
    * Drive by steering wheel
    */
   public void driveBySteering(){
-    double multiplier = 0.5;
+    double multiplier = DriveConst.normalSpeed;
 
+    // not implemented yet but probably will be used so sure why not
     // if (Controls.BOOSTSPEED.get()){	
-    //   multiplier = 0.7;
+    //   multiplier = DriveConst.maxSpeed;
     // }
     driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
-    turn = 0.55 * Controls.steering.getRawAxis(0);
+    turn = DriveConst.turnSensitivity * Controls.steering.getRawAxis(0);
   
     mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
 

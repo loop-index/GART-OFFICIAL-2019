@@ -2,13 +2,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.DriveConst;
 import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.Constants.Utils;
 import frc.robot.RobotLoop.StateManager;
 import frc.robot.RobotLoop.TeleopLoop;
 import frc.robot.RobotLoop.StateManager.WRISTSTATE;
+import frc.robot.Subsystems.ShuffleboardInputs;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -64,5 +68,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    ShuffleboardInputs.updateConst();
   }
 }
