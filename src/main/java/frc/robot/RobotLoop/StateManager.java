@@ -25,6 +25,26 @@ public class StateManager {
 
     public static ELEVATORSTATE elevatorState = ELEVATORSTATE.INACTIVE; // elevator state representation
     public static double targetHeight;
+    public static int level;
+    public static double lastHeight;
+    public static boolean limitUp = false;
+    public static boolean limitDown = false;
+
+    public static enum MANUAL_MODE {
+        INACTIVE,
+        ELEVATOR,
+        WRIST,
+    }
+    // public static MANUAL_MODE manualMode = MANUAL_MODE.ELEVATOR; //DEFAULT AUTO CONTROL
+    public static boolean manualMode = true; //starts in manual mode
+    public static enum CONTROL_MODE {
+        MANUAL,
+        AUTO, 
+        WRIST_CALIBRATE,
+        ELEVATOR_CALIBRATE,
+    }
+    public static CONTROL_MODE controlMode = CONTROL_MODE.MANUAL;
+
 
     //MANIPULATOR
     public static enum WRISTSTATE {
@@ -34,6 +54,9 @@ public class StateManager {
 
     public static WRISTSTATE wristState = WRISTSTATE.INACTIVE; // wrist state representation
     public static double targetAngle;
+    public static boolean changedFromMoveToHold = false;
+    public static boolean calibrating = false;
+    public static double lastAngle;
 
     public static enum CARGOSTATE {
         INACTIVE,
@@ -49,6 +72,7 @@ public class StateManager {
     }
 
     public static HATCHSTATE hatchState = HATCHSTATE.OUT; // hatch state representation
+    public static boolean hatchLock = false;
 
     //CLIMBER
     public static enum WHEELSTATE {
@@ -79,6 +103,7 @@ public class StateManager {
     public static enum MODE {
         CARGO,
         HATCH,
+        WRIST_CALIBRATE,
     }
     public static MODE mode = MODE.CARGO; //INIT MODE IS CARGO
 }

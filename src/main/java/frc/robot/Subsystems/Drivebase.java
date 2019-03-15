@@ -19,13 +19,13 @@ public class Drivebase extends Subsystem implements PIDOutput{
 
   //---HARDWARE---//
 
-  // WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.CAN_LEFT_MASTER);
-  // WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.CAN_RIGHT_MASTER);
-  // WPI_TalonSRX leftSlave = new WPI_TalonSRX(RobotMap.CAN_LEFT_FOLLOW);
-  // WPI_TalonSRX rightSlave = new WPI_TalonSRX(RobotMap.CAN_RIGHT_FOLLOW);
+  WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.CAN_LEFT_MASTER);
+  WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.CAN_RIGHT_MASTER);
+  WPI_TalonSRX leftSlave = new WPI_TalonSRX(RobotMap.CAN_LEFT_FOLLOW);
+  WPI_TalonSRX rightSlave = new WPI_TalonSRX(RobotMap.CAN_RIGHT_FOLLOW);
 
-  VictorSP leftMotor = new VictorSP(0);
-  VictorSP rightMotor = new VictorSP(1);
+  // VictorSP leftMotor = new VictorSP(0);
+  // VictorSP rightMotor = new VictorSP(1);
 
   DifferentialDrive mDrive = new DifferentialDrive(leftMotor, rightMotor);
 
@@ -79,13 +79,18 @@ public class Drivebase extends Subsystem implements PIDOutput{
    * Drive by steering wheel
    */
   public void driveBySteering(){
-    double multiplier = 0.5;
-
-    // if (Controls.BOOSTSPEED.get()){	
-    //   multiplier = 0.7;
-    // }
-    driveSpeed = Utils.getMedian(Controls.getLeftJoystick() * multiplier, driveSpeed + DriveConst.maxAcc, driveSpeed - DriveConst.maxAcc);
-    turn = 0.55 * Controls.steering.getRawAxis(0);
+    double multiplier = DriveConst.normalSpeed;
+    double forward_acc = DriveConst.maxAccFoward;
+    double backward_acc = DriveConst.maxAccBackward;
+    
+    if (Controls.BOOSTSPEED.get()){	
+      multiplier = DriveConst.maxSpeed;
+    }
+    if(Controls.NO_ACC_LIM.get()){
+      forward_acc = backward_acc = 0;
+    }
+    driveSpeed =  Utils.getMedian(-Controls.getLeftJoystick() * multiplier, driveSpeed + forward_acc, driveSpeed - backward_acc);
+    turn = DriveConst.maxTurnSpeed * Controls.steering.getRawAxis(0);
   
     mDrive.curvatureDrive(driveSpeed, turn, Controls.steering.getRawButton(5) || Controls.steering.getRawButton(6));
 

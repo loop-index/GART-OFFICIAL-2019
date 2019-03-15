@@ -26,7 +26,8 @@ public class ElevatorConstants {
 
     //PID gains slots 
     //	                                    			  kP   kI   kD   kF               Iz    PeakOut */
-    public final static Gains kGains_Distanc = new Gains( 1, 0.0,  0.0, 0.0,            0,  0.80 );
+    public final static Gains kGains_Distanc = new Gains( 10, 0.0,  0.0, 0.0,            0,  0.80 );
+    public static double tolerance = 1; //0.5cm tolerance
 
     //for feedforward
     public static double kFirstStageMass; //kg
@@ -48,13 +49,14 @@ public class ElevatorConstants {
     public static double kEncGearRatio = 3; //output 3 - enc 1 
 
     //set heights, all in cm
-    public final static double kHighestPosition = 185.0;
-    public final static double kLowestPosition = kDeadBand;
-    public final static double CARGO_level1Height = 69.862;
-    public final static double CARGO_shipHeight = 90.000;
-    public final static double CARGO_level2Height = 140.982;
+    public final static double kHighestPosition = 74;
+    public final static double kLowestPosition = 0;
+    public final static double CARGO_level1Height = 15.6;
+    public final static double CARGO_groundIntakeHeight = 6.1;
+    public final static double CARGO_shipHeight = 35.47;
+    public final static double CARGO_level2Height = 55.5;
     public final static double CARGO_level3Height = kHighestPosition;
-    public final static double HATCH_level1Height = 48.272;
+    public final static double HATCH_level1Height = 15.6;
     public final static double HATCH_level2Height = 119.392;
     public final static double HATCH_level3Height = 0;
 

@@ -1,13 +1,19 @@
 
 package frc.robot.Subsystems;
 
+import org.opencv.core.Mat;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Vision extends Subsystem {
-
+  public Thread m_visionThread;
   NetworkTable RPi = NetworkTableInstance.getDefault().getTable("/Raspberry Pi");
 	
 	NetworkTableEntry xEntry = RPi.getEntry("X");
@@ -71,7 +77,22 @@ public class Vision extends Subsystem {
       mode.setString("cargo");
     }
   }
-  
+  public void vision(){
+    m_visionThread = new Thread (() -> {
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 360);
+    camera.setExposureManual(10);
+    CvSink cvsink = CameraServer.getInstance().getVideo();
+    CvSource outputStream = CameraServer.getInstance().putVideo("vision",640,360);
+    Mat mat = new Mat();
+    while (!Thread.interrupted()){
+      if (cvsink.grabFrame(mat)== 0){
+        outputStream.notifyError(cvsink.getError());
+        continue;
+      }
+    }
+  });
+    }
   @Override
   public void initDefaultCommand() {
   }

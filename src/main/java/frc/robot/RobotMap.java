@@ -27,17 +27,17 @@ public class RobotMap {
                         STAGE2_LOWER_SWITCH = 3;
 
     //MANIPULATOR
-    public static int WRIST_VICTOR = 0, 
-                        UPPER_INTAKE = 1, 
+    public static int WRIST_VICTOR = 3, 
+                        UPPER_INTAKE = 5, 
                         LOWER_INTAKE = 2;
-    public static int ANALOG_ENCODER = 1;
-    public static int HATCH_SOLENOID = 2;
+    public static int ANALOG_ENCODER = 0;
+    public static int HATCH_SOLENOID = 3;
     public static int CARGO_SWITCH = 4;
 
     //CLIMBER
     public static int LEFT_CLIMBER = 3, 
                         RIGHT_CLIMBER = 4;
-    public static int PULLER = 2;
+    public static int PULLER = 4;
     //PNEUMATICS
     Compressor comp = new Compressor();
 

@@ -1,6 +1,12 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,9 +24,29 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+      // UsbCamera camera = new UsbCamera("", 0);
+      // camera.setResolution(640, 360);
+      
+      // CameraServer.getInstance().startAutomaticCapture();
+    
+      // CvSink cvsink = CameraServer.getInstance().getVideo();
+      // CvSource outputStream = CameraServer.getInstance().putVideo("name", 640, 360);
+      //   Mat source = new Mat();
+      //   while(true){
+      //     cvsink.grabFrame(source);
+      //     outputStream.putFrame(source);
+      //   }
+      // }).start();
+    
+  
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+  
+    RobotMap.mElevator.zero();
+    StateManager.level = 1;
+    StateManager.targetHeight = 0;
+    StateManager.targetAngle = RobotMap.mManipulator.getWristAngle();
   }
 
   @Override
@@ -36,20 +62,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        break;
-      case kDefaultAuto:
-      default:
-        break;
-    }
+    // switch (m_autoSelected) {
+    //   case kCustomAuto:
+    //     break;
+    //   case kDefaultAuto:
+    //   default:
+    //     break;
+    // }
+    TeleopLoop.teleopLoop();
   }
   
   @Override
   public void teleopInit() {
-    StateManager.targetHeight = 0;
-    StateManager.wristState = WRISTSTATE.MOVING;
-    StateManager.targetAngle = RobotMap.mManipulator.getWristAngle();
+    // TeleopLoop.teleopLoop();
   }
 
   @Override

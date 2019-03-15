@@ -27,29 +27,36 @@ public class ManipulatorConstants {
         * arm moves up  : angle +
         * arm moves down: angle -
     */
-    public static double angleOffset = 147.41; //arm at horizontal position
-    public static double upperLimit = 201.23; //arm at fully upwards position
-    public static double lowerLimit = 105; //arm at fully downwards position
+    public static double angleOffset = 126.5; //arm at horizontal position
+    public static double upperLimit = angleOffset + 94; //arm at fully upwards position
+    public static double lowerLimit = angleOffset - 42; //arm at fully downwards position
     public static double rangeOfMovement = upperLimit - lowerLimit;
     public static double angleTolerance = 10;
 
     //intake angles
-    public static double CARGO_groundIntakeAngle = -38.172;
-    public static double CARGO_stationIntakeAngle;
+    public static double CARGO_groundIntakeAngle = -42;
     public static double HATCH_intakeAngle;
 
     //fire angles
-    public static double CARGO_LV1Angle;
-    public static double CARGO_LV2Angle;
-    public static double CARGO_LV3Angle;  
+    public static double REST_ANGLE = upperLimit - angleOffset;
+    public static double CARGO_LV1Angle = 0;
+    public static double CARGO_LV2Angle = 0;
+    public static double CARGO_LV3Angle = 32.7;  
+    public static double CARGO_shipAngle = 0;
     public static double HATCH_LV1Angle;
     public static double HATCH_LV2Angle;
     public static double HATCH_LV3Angle;
 
+    public static double[][] setWristAngles = {
+        {CARGO_LV1Angle, CARGO_LV2Angle, CARGO_LV3Angle},
+        {HATCH_LV1Angle, HATCH_LV2Angle, HATCH_LV3Angle}
+    };
+
     //INTAKE CONSTANTS
-    public static double maxIntakeOutput = 0.8;
-    public static double maxFireOutput = -1;
-    public static double maxManipulatorOutput = 0.8;
+    public static double maxIntakeOutput = -0.8;
+    public static double maxFireOutput = 1;
+    public static double maxManipulatorOutput = 1;
+    public static double calibrateOutput = -0.2;
 
     //unused
     public static double cargoFireTimeout = 1; //sec
@@ -62,8 +69,9 @@ public class ManipulatorConstants {
     public static double smallError = 7;
     public static double epsilon = 1;
 
-    public static double kP_UP = 2.3*maxManipulatorOutput/rangeOfMovement;
+    public static double kP_UP = 4*maxManipulatorOutput/rangeOfMovement;
     public static double kI_UP = 0.03;
-    public static double kP_DOWN = 0.5*maxManipulatorOutput/rangeOfMovement;
+    public static double kP_DOWN = maxManipulatorOutput/rangeOfMovement;
 
+    public static double manualControlTolerance = 5;
 }

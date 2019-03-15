@@ -97,6 +97,10 @@ public class Utils {
 		return Math.abs(number1 - number2) <= epsilon;
 	}
 
+	public static boolean aeq (int number1, int number2, int epsilon) { // approx. equals
+		return Math.abs(number1 - number2) <= epsilon;
+	}
+
 	public static double countsToRad(double counts, double cpr) {
 		return counts*2*Math.PI/cpr;
 	}
