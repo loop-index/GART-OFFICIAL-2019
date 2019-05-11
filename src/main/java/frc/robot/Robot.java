@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
     StateManager.level = 1;
     StateManager.targetHeight = 0;
     StateManager.targetAngle = RobotMap.mManipulator.getWristAngle();
+    CSVLogger.delete("/home/lvuser/ele.csv");
   }
 
   @Override

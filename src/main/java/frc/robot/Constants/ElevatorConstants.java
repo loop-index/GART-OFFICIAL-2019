@@ -12,8 +12,8 @@ public class ElevatorConstants {
     public final static double kDeadBand = 34.8; //cm
 
     //control constants
-    public static double kCruiseVelocityRawUnits;
-    public static double kAccelerationRawUnits;
+    public static int kCruiseVelocityRawUnits = 750;
+    public static int kAccelerationRawUnits = 300;
     public final static double zeroingVelocity = -30; //cm/s
     public final static double zeroingOutput = -0.2;
 

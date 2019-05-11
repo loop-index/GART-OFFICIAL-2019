@@ -25,7 +25,9 @@ public class Controls {
     public static CustomButton CARGO_GROUND = new CustomButton(control_panel, 12);
     public static CustomButton HATCH_STATION = new CustomButton(control_panel, 13); //
     public static CustomButton INTAKE = new CustomButton(control_panel, 10);
-    public static CustomButton MANUAL_ELEVATOR_TRIG = new CustomButton(control_panel, 7);
+    // public static CustomButton MANUAL_ELEVATOR_TRIG = new CustomButton(control_panel, 7);
+    public static CustomButton MANUAL_ELEVATOR_TRIG = new CustomButton(testGamepad, 3);
+    public static CustomButton RESET_ELE_WRIST = new CustomButton(testGamepad, 4);
     public static int MANUAL_JOYSTICK = 0;
 
     public static CustomButton BOOSTSPEED = new CustomButton(joystick,1 );

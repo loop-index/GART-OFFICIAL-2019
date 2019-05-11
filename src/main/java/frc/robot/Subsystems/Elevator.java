@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import org.w3c.dom.css.ElementCSSInlineStyle;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -45,6 +47,7 @@ public class Elevator extends Subsystem {
 	double targetPosition; //in raw unit
 	int currentStage; //1 or 2
 	boolean isMoving = false;
+	public double lastVelocity = 0;
 
 	public Elevator() {
 		//init
@@ -68,8 +71,8 @@ public class Elevator extends Subsystem {
 		masterMotor.configNeutralDeadband(ElevatorConstants.kNeutralDeadband);
 		slaveMotor.configNeutralDeadband(ElevatorConstants.kNeutralDeadband);
 	
-		// masterMotor.configMotionCruiseVelocity(ElevatorConstants.kCruiseVelocity);
-		// masterMotor.configMotionAcceleration(ElevatorConstants.kAcceleration);
+		masterMotor.configMotionCruiseVelocity(ElevatorConstants.kCruiseVelocityRawUnits);
+		masterMotor.configMotionAcceleration(ElevatorConstants.kAccelerationRawUnits);
 
 		//PID config
 		masterMotor.config_kP(ElevatorConstants.kSlot_Distanc, ElevatorConstants.kGains_Distanc.kP, ElevatorConstants.kTimeoutMs);
@@ -135,16 +138,27 @@ public class Elevator extends Subsystem {
 		masterMotor.set(ControlMode.PercentOutput, output);
 	}
 
-	//main control methods
-	public void autoElevator() {
-		// if (Robot.op.isLV1) {
-		// 	setTargetPosition_PositionPID(ElevatorConstants.CARGO_level1Height);
-			
-		// }
+	// mechanism removed
+	/*** 
+	public void climb(double input) {
+		double processedInput = limitCheck(Utils.deadband(input, 0.1));
+		double output = processedInput;
+		if (output == 0) {
+			brakeElevator(true);
+		} else {
+			brakeElevator(false);
+		}
+		masterMotor.set(ControlMode.PercentOutput, output);
 	}
+
+	***/
 
 	public boolean isOnTarget() {
 		return Utils.aeq(masterMotor.getSelectedSensorPosition(), heightToCounts(StateManager.targetHeight), heightToCounts(ElevatorConstants.tolerance));
+	}
+
+	public boolean isAtGroundCargoHeight() {
+		return Utils.aeq(masterMotor.getSelectedSensorPosition(), heightToCounts(ElevatorConstants.CARGO_groundIntakeHeight), heightToCounts(ElevatorConstants.tolerance));
 	}
 
 	public void brakeElevator(boolean enable) {
@@ -158,7 +172,11 @@ public class Elevator extends Subsystem {
 	public void setTargetPosition_MotionMagic(double targetPosition) {
 		this.targetPosition = targetPosition;
 
-		masterMotor.set(ControlMode.MotionMagic, targetPosition, DemandType.ArbitraryFeedForward, 0);
+		
+		if (!isOnTarget()) {
+			masterMotor.set(ControlMode.MotionMagic, targetPosition, DemandType.ArbitraryFeedForward, 0);
+
+		}
 	}
 
 	public void setTargetPosition_PositionPID(int targetPosition) {//target height must be in raw units

@@ -3,7 +3,9 @@ package frc.robot.RobotLoop;
 
 import java.beans.Statement;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.CSVLogger;
 import frc.robot.Controls;
 import frc.robot.RobotMap;
 import frc.robot.Constants.ElevatorConstants;
@@ -143,11 +145,12 @@ public class TeleopLoop {
         SmartDashboard.putNumber("wrist motor output", RobotMap.mManipulator.wrist.get());
         SmartDashboard.putNumber("target angle", StateManager.targetAngle);
         // CHANGE MODE
-        if (Controls.CARGO_MODE.get()) {
-            StateManager.mode = MODE.CARGO;
-        } else if (Controls.HATCH_MODE.get()) {
-            StateManager.mode = MODE.HATCH;
-        }
+        // comment if not playing hatch
+        // if (Controls.CARGO_MODE.get()) {
+        //     StateManager.mode = MODE.CARGO;
+        // } else if (Controls.HATCH_MODE.get()) {
+        //     StateManager.mode = MODE.HATCH;
+        // }
 
         // CHANGE LEVEL
         if (Controls.LEVEL_2.get()) {
@@ -165,12 +168,19 @@ public class TeleopLoop {
         } else if (Controls.CARGO_GROUND.get()) {
             StateManager.level = 5;
             StateManager.controlMode = CONTROL_MODE.AUTO;
+        } else if (Controls.RESET_ELE_WRIST.get()) {
+            StateManager.level = 6;
+            StateManager.controlMode = CONTROL_MODE.AUTO;
         }
         // MANUAL CONTROL TRIGGER
         if (Controls.MANUAL_ELEVATOR_TRIG.uniquePress()) {
             StateManager.controlMode = CONTROL_MODE.MANUAL;
         }
 
+        // ENDGAME TRIGGER
+        if (Controls.ENDGAME.uniquePress()) {
+            StateManager.controlMode = CONTROL_MODE.ENDGAME;
+        }
         //print mode to the screen 
         // String elevatorAndWristMode;
         // if (StateManager.manualMode == MANUAL_MODE.INACTIVE) {
@@ -190,13 +200,13 @@ public class TeleopLoop {
         SmartDashboard.putBoolean("height tolerable", Utils.aeq(RobotMap.mElevator.getHeightInCounts(), StateManager.targetHeight, RobotMap.mElevator.heightToCounts(ElevatorConstants.tolerance)));
         // CONTROL ELEVATOR AND MANIPULATOR
         // calib
-        if (Controls.testGamepad.getRawButton(3)) {
-            StateManager.controlMode = CONTROL_MODE.WRIST_CALIBRATE;
-        }
+        // if (Controls.testGamepad.getRawButton(3)) {
+        //     StateManager.controlMode = CONTROL_MODE.WRIST_CALIBRATE;
+        // }
         // Comment this for testing
         if (StateManager.controlMode == CONTROL_MODE.MANUAL) {
+            // main code
             RobotMap.mElevator.joystickControl(-Controls.testGamepad.getRawAxis(1));
-            // RobotMap.mManipulator.joystickControl(-Controls.testGamepad.getRawAxis(5));   
             RobotMap.mManipulator.joystickTest(-Controls.testGamepad.getRawAxis(5));
         } else if (StateManager.controlMode == CONTROL_MODE.AUTO) {
             // StateManager.targetHeight = RobotMap.mElevator.getTargetHeight(StateManager.level, StateManager.mode);
@@ -227,17 +237,23 @@ public class TeleopLoop {
                     StateManager.targetAngle = ManipulatorConstants.CARGO_groundIntakeAngle;
                     StateManager.limitDown = true;
                     StateManager.limitUp = true;
+                } else if (StateManager.level == 6) {
+                    StateManager.targetHeight = 0;
+                    StateManager.targetAngle = 94.5;
+                    StateManager.limitDown = true;
+                    StateManager.limitUp = true;
                 }
                 RobotMap.mManipulator.setWristAngle(StateManager.targetAngle);
-                // RobotMap.mElevator.setTargetPosition_PositionPID(RobotMap.mElevator.heightToCounts(StateManager.targetHeight));
-                RobotMap.mElevator.joystickControlWithLimits(-Controls.testGamepad.getRawAxis(1), StateManager.limitUp, StateManager.limitDown);    
+                if (StateManager.level != 6) {
+                    RobotMap.mElevator.joystickControlWithLimits(-Controls.testGamepad.getRawAxis(1), StateManager.limitUp, StateManager.limitDown);    
+                } else {
+                    RobotMap.mElevator.joystickControlWithLimits(-1, StateManager.limitUp, StateManager.limitDown);    
+                }
+                
             } 
-        } else if (StateManager.controlMode == CONTROL_MODE.WRIST_CALIBRATE) {
-            if (RobotMap.mManipulator.runToLowestPosition(ManipulatorConstants.calibrateOutput)) {
-                StateManager.controlMode = CONTROL_MODE.MANUAL;
-                StateManager.targetAngle = RobotMap.mManipulator.getWristAngle();
-            } 
-        } 
+        } else if (StateManager.controlMode == CONTROL_MODE.ENDGAME) {
+            RobotMap.mClimber.puller.set(-Controls.testGamepad.getRawAxis(1));
+        }
 		SmartDashboard.putBoolean("ele on target", RobotMap.mElevator.isOnTarget());
 
         //  INTAKE & FIRE
@@ -274,6 +290,8 @@ public class TeleopLoop {
             // RobotMap.mManipulator.lockHatch(StateManager.hatchLock);
             // SmartDashboard.putString("mode", "HATCH");
         }
+        // CSVLogger.save("/home/lvuser/ele.csv", new double[] {RobotMap.mElevator.getHeightInCM(), (double) RobotMap.mElevator.masterMotor.getSelectedSensorPosition(), (double) RobotMap.mElevator.masterMotor.getSelectedSensorVelocity(), (RobotMap.mElevator.masterMotor.getSelectedSensorVelocity() - RobotMap.mElevator.lastVelocity) / 0.02, RobotMap.mElevator.masterMotor.getMotorOutputPercent(), Timer.getFPGATimestamp()});
+        // RobotMap.mElevator.lastVelocity = RobotMap.mElevator.masterMotor.getSelectedSensorVelocity();
     }
 
 }

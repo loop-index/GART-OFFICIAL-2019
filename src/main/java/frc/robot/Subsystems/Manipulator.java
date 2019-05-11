@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.LimitSwitch;
 import frc.robot.RobotMap;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.Constants.Utils;
 import frc.robot.RobotLoop.StateManager;
@@ -131,19 +132,9 @@ public class Manipulator extends Subsystem {
       kP = ManipulatorConstants.kP_DOWN;
       output = Utils.limitNumber((ERROR) * kP, -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
     }
-    // if (ERROR > 0) {
-    //   kP = ManipulatorConstants.kP_UP;
-    //   // kP = (ERROR < ManipulatorConstants.smallError && ERROR > ManipulatorConstants.epsilon) ? kP : kP*2;
-    //   output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
-    // } else {
-    //   if (ERROR < -90) {
-    //     kP = ManipulatorConstants.kP_UP;
-    //     output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);  
-    //   } else {
-    //     kP = ManipulatorConstants.kP_DOWN;
-    //     output = Utils.limitNumber((ERROR) * kP + getFeedForward(), -ManipulatorConstants.maxManipulatorOutput, ManipulatorConstants.maxManipulatorOutput);
-    //   }
-    // }
+    
+    // output = ((RobotMap.mElevator.isAtGroundCargoHeight() || RobotMap.mElevator.getHeightInCM() < ElevatorConstants.CARGO_groundIntakeHeight) && output < 0 && (!Utils.aeq(getWristAngleWithoutOffset(), horizontalAngle, ManipulatorConstants.manualControlTolerance))) ? 0: output;
+
     wrist.set(output);
     
     if (wristOnTarget()) {
@@ -225,11 +216,22 @@ public class Manipulator extends Subsystem {
    * Safety method(s)
    */
   public double limitCheck(double input) {
-		if (Math.abs(getWristAngleWithoutOffset() - lowerLimitAngle) <= ManipulatorConstants.manualControlTolerance && input < 0) {
+		// if (Math.abs(getWristAngleWithoutOffset() - lowerLimitAngle) <= ManipulatorConstants.manualControlTolerance && input < 0) {
+		// 	return 0;
+		// } else if (Math.abs((upperLimitAngle) - getWristAngleWithoutOffset()) <= ManipulatorConstants.manualControlTolerance && input > 0) {
+		// 	return 0;
+		// } else {
+		// 	return input;
+    // }
+    if (Math.abs(getWristAngleWithoutOffset() - lowerLimitAngle) <= ManipulatorConstants.manualControlTolerance && input < 0) {
 			return 0;
 		} else if (Math.abs((upperLimitAngle) - getWristAngleWithoutOffset()) <= ManipulatorConstants.manualControlTolerance && input > 0) {
-			return 0;
-		} else {
+      return 0;
+    }
+    // } else if(((RobotMap.mElevator.isAtGroundCargoHeight() || RobotMap.mElevator.getHeightInCM() < ElevatorConstants.CARGO_groundIntakeHeight) && Utils.aeq(getWristAngleWithoutOffset(), horizontalAngle, ManipulatorConstants.manualControlTolerance)) && input < 0) {
+    //   return 0;
+    // } 
+    else {
 			return input;
 		}
 	}

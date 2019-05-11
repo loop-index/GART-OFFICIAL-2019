@@ -24,7 +24,7 @@ public class StateManager {
     }
 
     public static ELEVATORSTATE elevatorState = ELEVATORSTATE.INACTIVE; // elevator state representation
-    public static double targetHeight;
+    public static double targetHeight; //in cm
     public static int level;
     public static double lastHeight;
     public static boolean limitUp = false;
@@ -42,6 +42,7 @@ public class StateManager {
         AUTO, 
         WRIST_CALIBRATE,
         ELEVATOR_CALIBRATE,
+        ENDGAME,
     }
     public static CONTROL_MODE controlMode = CONTROL_MODE.MANUAL;
 
