@@ -58,6 +58,7 @@ public class Drivebase extends Subsystem implements PIDOutput{
   public void driveByJoystick(){
 
     if (!Controls.getVisionTrigger()){ 
+      // lmao this is the code for using the actual joysticks but yeah sure this is even more misleading than 
       // leftSpeed = Utils.getMedian(Controls.getLeftJoystick() * 0.5, leftSpeed + DriveConst.maxAcc, leftSpeed - DriveConst.maxAcc);
 		  // rightSpeed = Utils.getMedian(Controls.getRightJoystick() * 0.5, rightSpeed + DriveConst.maxAcc, rightSpeed - DriveConst.maxAcc);
       
